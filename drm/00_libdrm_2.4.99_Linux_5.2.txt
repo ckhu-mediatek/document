@@ -1,0 +1,11 @@
+底下內容是基於 libdrm-2.4.99 以及 Linux 5.2 版。
+
+libdrm-2.4.99
+
+https://cgit.freedesktop.org/mesa/drm/tree/?id=b2103fa3257daa6acfdc6f4d4d8565abebaec4a8
+
+Linux 5.2
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/?id=0ecfebd2b52404ae0c54a878c872bb93363ada36
+
+

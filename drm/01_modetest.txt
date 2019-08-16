@@ -1,0 +1,61 @@
+要了解 DRM，就要從了解 modetest 開始。
+modetest 是 libdrm 提供的 unit test code，
+是整個 DRM 控制的最上層，由上往下更容易了解整個控制流程。
+底下是 modetest 以及使用到的 util 的 source code
+
+modetest
+https://cgit.freedesktop.org/mesa/drm/tree/tests/modetest?id=b2103fa3257daa6acfdc6f4d4d8565abebaec4a8
+
+util
+https://cgit.freedesktop.org/mesa/drm/tree/tests/util/kms.c?id=b2103fa3257daa6acfdc6f4d4d8565abebaec4a8
+
+1. 打開顯示卡
+
+modetest 一開始會呼叫 util_open()，而 util_open() 會呼叫 drmOpen()，透過 drmOpen() 可以打開 drm devide。
+在 /dev/dri/ 底下，會有許多 drm devie，底下的例子顯示有兩個顯示卡，
+
+> ls /dev/dri
+card0	card1	renderD128
+
+使用 drmOpen() 可以選擇要打開哪個顯示卡，
+
+fd = drmOpen(module, device);
+
+device 先不用管，設定為 NULL 即可，
+module 是顯示卡的名稱，不是檔案名稱，這個名稱可能像是底下的名稱，
+
+static const char * const modules[] = {
+	"i915",
+	"amdgpu",
+	"radeon",
+	"nouveau",
+	"vmwgfx",
+	"omapdrm",
+	"exynos",
+	"tilcdc",
+	"msm",
+	"sti",
+	"tegra",
+	"imx-drm",
+	"rockchip",
+	"atmel-hlcdc",
+	"fsl-dcu-drm",
+	"vc4",
+	"virtio_gpu",
+	"mediatek",
+	"meson",
+	"pl111",
+	"stm",
+	"sun4i-drm",
+	"armada-drm",
+};
+
+我們接下來就以 "mediatek" 為例子。
+
+2. Atomic
+
+接下來的動作，會因為 atomic 而有區別，因為 atomic 是新提出的架構，底下就針對 atomic 的部分解釋。
+舊的架構裡，每個 API 生效的時間點是獨立的，也就是你沒有辦法控制多個 API 的設定是在同一個時間點生效，
+某些情況下同時生效會有比較好的畫面效果，atomic 就提供了多個 API 同時生效的架構。
+
+3. 
